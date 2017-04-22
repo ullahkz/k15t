@@ -1,0 +1,163 @@
+<div class="row">
+	<div class="col-lg-12">
+		<h1>Details	&amp; Discussion</h1>
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<div class="well">
+			<h3>1. Search Application with - JavaScript</h3>
+			<ol>
+				<li>
+				<p>The carStock search application has been built with the aid of Plain JavaScript and Angular JS.</p></li>
+				<li><p>At first I made a simple search application with plain JavaScript. A dynamic table has been created from the <code>car.json</code> file.</p></li>
+				<li><p>A single input field is available for searching cars with keywords.</p></li>
+				<li><p>List of possible car search by: Name, Color, Year of Construction, Price.</p></li>
+				<li><p>If keyword matches with the list of available cars, that row/rows from the table are shown and others are hidden.</p></li>
+				<li><p>Please select the <code>JavaScript</code> tab from the navigation menu to use the app.</p></li>
+				<li>Available apps: list of cars with pictures, table with dynamic data and table with static data</li>
+			</ol>
+		</div>
+		<div class="well">
+			<h3>JavaScript Code: </h3>
+			<pre>
+			<xmp>
+			var $newRow = $('#table>tbody>tr');
+					$('#search2').keyup(function() {
+					  var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase().split(' ');
+
+					  $newRow.hide().filter(function() {
+					    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+					    var matchesSearch = true;
+					    $(val).each(function(index, value) {
+					      matchesSearch = (!matchesSearch) ? false : ~text.indexOf(value);
+					    });
+					    return matchesSearch;
+					  }).show();
+					});
+			</xmp>
+			</pre>
+		</div>
+		<div class="well">
+			<h3>Discussion</h3>
+			<ol>
+				<li><p>Application provides the users to search cars by using keywords with a space between the words.</p></li>
+				<li><p>Application transforms query text into lower case as this is not a case sensitive search application. Query string is splitted if multiple keywords are used for searching.</p></li>
+				<li><p>If query string matches with the text of table row, it finds the index of the query string and returns <code>true</code></p> and shows only the matched table row.</li>
+				<li><p>If query string doesn't match with the text , it returns <code>false</code> (or -1)</p></li>
+				<li><p>As a result all the rows are hidden.</p></li>
+			</ol>
+		</div>
+		<div class="well">
+			<h3>Limitation</h3>
+			<ul>
+				<li><p>Application doesn't provide the flexibility to query cars by selecting a price range. Query string should match with the text.</p></li>
+				<li><p>It doesn't give any feedback to the user about the available/possible search categories.</p></li>
+				<li>However, of course it is possible to do with JavaScript by providing users more control.</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<div class="well">
+			<h3>1. Search Application with - Angular JS</h3>
+			<ol>
+				<li>
+				<p>To make my life easier, carStock search application has been also built with the Angular JS framework.</p></li>
+				<li><p>I decided to build the whole app in Angular JS and include everything here as a SPA(single page application) </p></li>
+				<li><p>A dynamic view has also been created from the <code>car.json</code>.</p></li>
+				<li><p>To make the application look nicer and meaningful I have used some dummy picture.(collected from google)</p></li>
+				<li><p>Here users can search car by: Name, Color, Year of Construction and Price range (min and max price) individually and also can be used all together.</p></li>
+				<li><p>This app provides user the control for searching cars within a specific price range.</p></li>
+				<li><p>App also provides a feedback about the available cars and colors in the stock.</p></li>
+				<li><p>Please select the <code>Angular JS</code> tab from the navigation menu to use the app.</p></li>
+			</ol>
+		</div>
+		<div class="well">
+			<h3>Angular JS searchApp module: </h3>
+			<pre>
+			<xmp>
+				var searchApp = angular.module("searchApp", ["ngRoute", "ngAnimate"]);
+
+				searchApp.config(function($routeProvider){
+					$routeProvider
+						.when("/angularApp", {
+							templateUrl: "Partials/angularApp.html",
+							controller: "CarListCtrl"
+						})
+						.when("/JavaScriptApp", {
+							templateUrl: "Partials/JavaScriptApp.html",
+							controller: "CarListCtrl"
+						})
+						.when("/details",{
+							templateUrl: "Partials/details.html"
+						})
+						.otherwise({
+							redirectTo: "/angularApp"
+						});
+				});
+
+				searchApp.controller("HeaderCtrl", function($scope, $location){
+					$scope.appDetails = {
+						title: "carStock",
+						tagline: "search your fav cars here"
+					}
+					$scope.nav = {};
+					$scope.nav.isActive = function(path){
+						if(path == $location.path()){
+							return true;
+						}
+						return false;
+					}
+
+				});
+
+				searchApp.controller("CarListCtrl", function($scope, $http) {
+					$http.get('data/car.json').then(function(response){
+						$scope.cars = response.data.carStock;
+						console.log($scope.cars);
+					});
+
+					 $scope.price = {
+					 	min: 0,
+					 	max: 120000
+					 };
+				});
+
+				searchApp.filter('priceFilter', function(){
+					return function(cars, searchString) {
+						var filtered = [];
+
+						var max = searchString.max;
+						var min = searchString.min;
+
+						angular.forEach(cars, function(car){
+							if(car.price <= max && car.price >= min){
+								filtered.push(car);
+							}
+						});
+						return filtered;
+					}
+				});
+			</xmp>
+			</pre>
+		</div>
+		<div class="well">
+			<h3>Discussion</h3>
+			<ol>
+				<li><p>This angular application provides users to search cars by selecting different properties of the car.</p></li>
+				<li><p>Users don't need to write everytime while searching for a car. Althoug there is an input field where users can search by their keywords.</p></li>
+				<li><p>List of available cars, colors, year of construction are listed and sorted in the form of dropdown selection</p></li>
+				<li><p>Car can be also searched by a given price range. Minimum Price range is set to zero and Maximum price range is set to the maximum price from the available carStock.</p></li>
+				<li><p>It is also considered that price tab never goes to negative value and Maximum price value never goes less then the minimum price value</p></li>
+				<li><p>Price range can be controlled by increamenting the price unit.(here in this case each step is 5000 &euro;</p></li>
+				<li><p>If the query doesn't match with the available carStock data then nothing is shown.</p></li>
+			</ol>
+		</div>
+		<div class="well">
+			<h3>Limitation</h3>
+			<ul>
+				<li><p>More search possibilities can be included here. E.g range of year</p></li>
+				<li><p>If nothing matches a feedback message can be showed to the user.</p></li>
+			</ul>
+		</div>
+	</div>
+</div>
+

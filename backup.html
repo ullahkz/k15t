@@ -1,0 +1,161 @@
+<div class="row">
+	<div class="col-lg-12">
+
+	<div class="row">
+		<h2 class="col-lg-6 col-md-6 col-sm-12 col-xs-12">Plain JavaScript (jQuery) application</h2>
+		  <form role="search" class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+		    <div class="form-group">
+		      <input id="search" type="text" class="form-control" placeholder="Search Car Here">
+		    </div>
+		  </form>
+	</div>
+		<div id="carListWrapper">
+			<ul class="list-unstyled">
+				<li class="carList col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-repeat="car in cars"> 
+				  <div class="row">
+					<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+						<img class="img-responsive" src="./imgs/{{car.color}}.jpg" alt="image">
+					</div>
+					<div class="car-details col-lg-6 col-md-12 col-sm-12 col-xs-12">
+						<h2>{{car.type}}</h2>
+						<h3>{{car.price | currency: 'Price : '}} &euro; </h3>
+						<h4>Color: <span style="color: {{car.color}}">{{car.color}}</span></h4>
+						<h4>Year of Construction: {{car.yearOfConstruction}}</h4>
+						<h5 ng-if="car.notes != null">Notes: {{car.notes}}</h5>
+					</div>
+				</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="row" style="height: 450px;">
+	  <form role="search" class="col-lg-12" style="margin-top: 20px;">
+	    <div class="form-group">
+	      <input id="search2" type="text" class="form-control" placeholder="Search Car from the dynamic table">
+	    </div>
+	  </form>
+	<div class="table-responsive col-lg-12">
+		<h2>Search from dynamic table</h2>
+		<table id="table" class="table table-hover">
+		<thead>
+			<tr>
+				<!-- <th>#</th> -->
+				<th>Type</th>
+				<th>Color</th>
+				<th>Year of Construction</th>
+				<th>Price</th>
+				<th>Note</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+		</table>
+	</div>
+</div>
+
+<hr>
+<!-- start -->
+<div class="row" style="height: 450px;">
+	  <form role="search" class="col-lg-12 ng-pristine" style="margin-top: 20px;">
+	    <div class="form-group">
+	      <input id="search3" type="text" class="form-control" placeholder="Search Car from the static table">
+	    </div>
+	  </form>
+	<div class="table-responsive col-lg-12">
+		<h2>Search from Static table</h2>
+		<table id="tableStatic" class="table table-striped">
+		<thead>
+			<tr>
+				<!-- <th>#</th> -->
+				<th>Type</th>
+				<th>Color</th>
+				<th>Year of Construction</th>
+				<th>Price</th>
+				<th>Note</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		<tr id="1"><td>Porsche 911</td><td>red</td><td>2000</td><td style="text-align:right;">60000 €</td><td></td></tr><tr id="2" style=""><td>Porsche Panamera</td><td>black</td><td>2010</td><td style="text-align:right;">120000 €</td><td></td></tr><tr id="3" style=""><td>VW Beetle</td><td>green</td><td>1960</td><td style="text-align:right;">8000 €</td><td>damaged at the front bumper</td></tr><tr id="4" style=""><td>Audi A5</td><td>blue</td><td>1998</td><td style="text-align:right;">28345 €</td><td></td></tr><tr id="5" style=""><td>Ferrari 430 Spider</td><td>yellow</td><td>1990</td><td style="text-align:right;">80435 €</td><td></td></tr><tr id="6" style=""><td>Audi Commodore</td><td>gray</td><td>1992</td><td style="text-align:right;">8212 €</td><td></td></tr></tbody>
+		</table>
+	</div>
+</div>
+<!-- end -->
+<script>
+	$.getJSON("./data/car.json", function(cars){
+		$.each(cars.carStock, function(i, car){
+			$('#table>tbody').append('<tr id="'+(i+1)+'"></tr>');	
+			//$('tr#'+(i+1)).append('<td>'+(i+1)+'</td>');
+			$('tr#'+(i+1)).append('<td>'+car.type+'</td>');
+			$('tr#'+(i+1)).append('<td>'+car.color+'</td>');
+			$('tr#'+(i+1)).append('<td>'+car.yearOfConstruction+'</td>');
+			$('tr#'+(i+1)).append('<td style="text-align:right;">'+car.price+' &#x20AC;</td>');
+			if(car.notes){
+				$('tr#'+(i+1)).append('<td>'+car.notes+'</td>');
+			}
+			else{
+				$('tr#'+(i+1)).append('<td></td>');
+			}
+		});		
+	});
+</script>
+<script>	
+	$(document).ready(function(){
+		var $rows = $('.list-unstyled>li');
+
+		console.log($rows.length);
+		$('#search').keyup(function() {
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+			console.log(val);
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				//"g" Perform a global match (find all matches rather than stopping after the first match)
+				// For case sensitive match need to replace g with 'i' and remvoe 'toLowerCase()'
+				return !~text.indexOf(val);
+			}).hide();
+		});
+
+		// var $row2 = $('#table>tbody>tr');
+		// $('#search2').keyup(function() {
+		// 	var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		// 	console.log(val);
+		// 	$row2.show().filter(function() {
+		// 		var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+		// 		//"g" Perform a global match (find all matches rather than stopping after the first match)
+		// 		// For case sensitive match need to replace g with 'i' and remvoe 'toLowerCase()'
+		// 		return !~text.indexOf(val);
+		// 	}).hide();
+		// });
+
+		var $row3 = $('#tableStatic>tbody>tr');
+		$('#search3').keyup(function() {
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+			console.log(val);
+			$row3.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				//"g" Perform a global match (find all matches rather than stopping after the first match)
+				// For case sensitive match need to replace g with 'i' and remvoe 'toLowerCase()'
+				return !~text.indexOf(val);
+			}).hide();
+		});
+
+
+		var $newRow = $('#table>tbody>tr');
+		$('#search2').keyup(function() {
+		  var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase().split(' ');
+
+		  $newRow.hide().filter(function() {
+		    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+		    var matchesSearch = true;
+		    $(val).each(function(index, value) {
+		      matchesSearch = (!matchesSearch) ? false : ~text.indexOf(value);
+		    });
+		    return matchesSearch;
+		  }).show();
+		});
+				
+	});
+</script>

@@ -1,0 +1,61 @@
+<div class="row">
+	<div class="col-lg-12">
+	<div class="row">
+		<h2 class="col-lg-6 col-md-6 col-sm-12 col-xs-12">This is an Angular JS application</h2>
+		  <form role="search" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+		  <div class="row">
+			    <div class="form-group">
+					<div class="col-lg-4 col-md-4">
+					      <!-- <input ng-model="searchString" type="text" class="form-control" placeholder="Search Car by keyword"/> -->
+					      <label for="name">Name :</label>
+					      <select class="form-control" name="name" id="nameSelector" ng-model="searchString.type" class="form-control" data-style="btn">
+					      		<option value="">Select a Name</option>
+						  		<option value="{{car.type}}" ng-repeat="car in cars | orderBy: 'type'">{{car.type}}</option>
+						  </select>
+					      <label for="color">Color :</label>
+						  <select name="color" id="colorSelector" ng-model="searchString.color" class="form-control">
+						  	<option value="">Select a Color</option>
+						  	<option value="{{car.color}}" ng-repeat="car in cars | orderBy: 'color'">{{car.color}}</option>
+						  </select>
+				   </div>
+				   <div class="col-lg-4 col-md-4">
+					  <label for="minPrice">Min. Price(&euro;):</label>
+					  <input ng-model="price.min" type="number" name="minPrice" step="5000" min="0" class="form-control" placeholder="Set minimum price e.g. 60000"/>
+					  <label for="maxPrice">Max. Price(&euro;):</label>
+					  <input ng-model="price.max" type="number" name="maxPrice" step="5000" min="{{price.min}}" class="form-control" placeholder="Set maximum price e.g. 60000"/>
+				   </div>
+				   <div class="col-md-4 col-lg-4">
+					  <label for="yOfConstruction">Year of Construction:</label>
+					  <select name="yearOfConstruction" id="yearSelector" ng-model="searchString.yearOfConstruction" class="form-control">
+					  	<option value="">Search by Construction year</option>
+					  	<option value="{{car.yearOfConstruction}}" ng-repeat="car in cars | orderBy: '-yearOfConstruction'">{{car.yearOfConstruction}}</option>
+					  </select>
+					  <label for="keyword">Search By anything</label>
+					  	<input ng-model="searchString" type="text" value="" name="keyword" class="form-control" placeholder="Search Car by anything"/>
+				   </div>
+				</div>
+			</div>
+		  </form>
+	</div>
+	<hr>
+		<div id="carListWrapper">
+			<ul class="list-unstyled">
+				<li class="carList col-lg-6 col-md-4 col-sm-6 col-xs-12" ng-repeat="car in cars | priceFilter:price | filter: searchString"> 
+				<!-- | filter: lessThan('price', searchString.price) -->
+				  <div class="row">
+					<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 imageLeft">
+						<img class="img-responsive" src="./imgs/{{car.color}}.jpg" alt="image">
+					</div>
+					<div class="car-details col-lg-6 col-md-12 col-sm-12 col-xs-12 textRight">
+						<h2>{{car.type}}</h2>
+						<h3>{{car.price | currency: 'Price : '}} &euro; </h3>
+						<h4>Color: <div style="width: 15px; height: 15px; background-color: {{car.color}}; display: inline-block; margin-bottom: -1px; margin-left: 5px;"></div></h4>
+						<h4>Year of Construction: {{car.yearOfConstruction}}</h4>
+						<h5 ng-if="car.notes != null">Notes: {{car.notes}}</h5>
+					</div>
+				</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

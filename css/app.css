@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4 {
+    font-family: fantasy;
+}
+
+h5 {
+    font-family: monospace;
+}
+
+#headerWrapper {
+    width: 100%;
+    /*height: 80px;*/
+}
+
+.logo {
+    padding: 10px;
+    /*margin-right: 10px;*/
+    font-size: 40px;
+    font-family: fantasy;
+}
+
+.tagline {
+    font-size: 10px;
+    color: #dddddd;
+    margin-top: 35px;
+    margin-left: -150px;
+    font-family: monospace;
+}
+
+.carList {
+    min-height: 250px;
+    margin-bottom: 5px;
+    /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5)*/
+}
+
+.imageLeft {
+    height: 250px;
+}
+
+.textRight {
+    height: 200px;
+}
+
+/*.car-details {
+    margin: auto 0;
+    padding: 10px  10px 10px 300px;
+}*/
+
+/*.container.ng-enter {
+    -webkit-transition: 0.5s linear all;
+    -moz-transition: 0.5s linear all;
+    -o-transition: 0.5s linear all;
+    opacity: 0;
+}
+.container.ng-enter-active {
+    opacity:1;
+}*/
+
+.carList.ng-leave {
+    -webkit-transition: 0.5s linear all;
+    -moz-transition: 0.5s linear all;
+    -o-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+    opacity: 1;
+    top: 0;
+}
+
+.carList.ng-leave-active {
+    opacity: 0;
+    top: 600px;
+}
+
+.carList.ng-enter {
+    -webkit-transition: 0.5s linear all;
+    -moz-transition: 0.5s linear all;
+    -o-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+    opacity: 0;
+    top: 600px;
+}
+
+.carList.ng-enter-active {
+    opacity: 1;
+    top: 0;
+}
+
+.navbar {
+    border-radius: initial;
+}
